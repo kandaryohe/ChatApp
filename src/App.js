@@ -4,17 +4,22 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import Room from "./Room";
 
+import { AuthProvider } from "./AuthService";
+import LoggedInRoute from "./LoggedInRoute";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Room />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/signup" element={<SignUp />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <LoggedInRoute exact path="/" element={<Room />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<SignUp />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 
