@@ -1,17 +1,10 @@
 import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate, Outlet } from "react-router-dom";
 
 import { AuthContext } from "./AuthService";
 
-const LoggedInRoute = ({ component: Component, ...rest }) => {
+const LoggedInRoute = () => {
   const user = useContext(AuthContext);
-  return (
-    <Route
-      {...rest}
-      component={(routeProps) =>
-        user ? <Component {...routeProps} /> : <Redirect to="/login" />
-      }
-    />
-  );
+  return user ? <Outlet /> : <Navigate replace to={"/login"}></Navigate>;
 };
 export default LoggedInRoute;

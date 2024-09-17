@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import firebase from "./config/firebase";
-// import { AuthContext } from "./AuthService";
+import React, { useContext, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { auth } from "./config/firebase";
+import { AuthContext } from "./AuthService";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const user = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    firebase
-      .auth()
-      .sighInWithEmailAndPassword(email, password)
+
+    signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         history.push("/");
       })
@@ -21,7 +22,7 @@ const Login = ({ history }) => {
   };
 
   if (user) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   return (

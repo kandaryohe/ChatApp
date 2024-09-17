@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import firebase from "./config/firebase";
+import { db } from "./config/firebase";
 import { AuthContext } from "./AuthService";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 
 const Room = () => {
   const [messages, setMessages] = useState([]);
@@ -8,22 +10,19 @@ const Room = () => {
   const user = useContext(AuthContext);
   const handleSubmit = (e) => {
     e.preventDefault();
-    firebase.firestore().collection("messages").add({
+    addDoc(collection(db, "messages"), {
       content: value,
       user: user.displayName,
     });
   };
 
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection("messages")
-      .onSnapshot((snapshot) => {
-        const messages = snapshot.docs.map((doc) => {
-          return doc.date();
-        });
-        setMessages(messages);
+    onSnapshot(collection(db, "messages"), (snapshot) => {
+      const messages = snapshot.docs.map((doc) => {
+        return doc.date();
       });
+      setMessages(messages);
+    });
   }, []);
 
   return (
@@ -44,7 +43,7 @@ const Room = () => {
         />
         <button type="submit">送信</button>
       </form>
-      <button onClick={() => firebase.auth().signOut()}>Logout</button>
+      <button onClick={() => signOut()}>Logout</button>
     </>
   );
 };

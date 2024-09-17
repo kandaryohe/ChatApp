@@ -1,7 +1,7 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import firebase from "./config/firebase";
+import { auth } from "./config/firebase";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -10,9 +10,8 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+
+    createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         user.updateProfile({
           displayName: name,

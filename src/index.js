@@ -4,7 +4,7 @@
 
 // ReactDOM.render(<App></App>, document.getElementById("root"));
 
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import React from "react";
 import App from "./App";
 
